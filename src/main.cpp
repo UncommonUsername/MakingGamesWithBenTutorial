@@ -50,6 +50,14 @@ int main()
         return -1;
     }
 
+    while (!glfwWindowShouldClose(window))
+    {
+
+        // Call events and swap buffer
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
     /* Cleanup */
     glfwTerminate();
 
