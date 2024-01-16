@@ -3,6 +3,9 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "Sprite.h"
+#include "GLSLProgram.h"
+
 enum class GameState {PLAY, EXIT};
 
 class MainGame
@@ -16,8 +19,10 @@ public:
 
 private:
     void initSystems();
+    void initShaders();
     void processInput();
     void gameLoop();
+    void drawGame();
 
     static void mouseCallback(GLFWwindow* window, double xposIn, double yposIn);
 
@@ -26,4 +31,7 @@ private:
     int _screenHeight;
 
     GameState _gameState;
+
+    Sprite _sprite;
+    GLSLProgram _colorProgram;
 };

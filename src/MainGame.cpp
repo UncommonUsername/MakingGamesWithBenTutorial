@@ -1,16 +1,8 @@
+#include "MainGame.h"
+#include "Errors.h"
+
 #include <iostream>
 #include <string>
-
-#include "MainGame.h"
-
-void fatalError(std::string errorMessage)
-{
-    std::cout << errorMessage << std::endl;
-    std::cout << "Enter any key to quit...\n";
-    int tmp;
-    std::cin >> tmp;
-    exit(EXIT_FAILURE);
-}
 
 MainGame::MainGame()
 {
@@ -28,6 +20,9 @@ MainGame::~MainGame()
 void MainGame::run()
 {
     initSystems();
+
+    _sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+
     gameLoop();
 }
 
@@ -55,24 +50,45 @@ void MainGame::initSystems()
 
     glfwMakeContextCurrent(_window);
     glfwSetCursorPosCallback(_window, mouseCallback);
+
+    // Initiate GLEW
+    glewExperimental = GL_TRUE;
+    GLenum error = glewInit();
+    if (error != GLEW_OK)
+    {
+        glfwTerminate();
+        fatalError("Failed to initialize GLEW!");
+    }
+
+    glEnable(GL_DEPTH_TEST);
+
+    glClearColor(0.012f, 0.0235f, 0.2157f, 1.0f);
+
+    initShaders();
+}
+
+void MainGame::initShaders()
+{
+    _colorProgram.compileShaders("./shaders/colorShading.vert", "./shaders/colorShading.frag");
+    _colorProgram.addAttribute();
+    _colorProgram.linkShaders();
 }
 
 void MainGame::processInput()
 {
+    glfwPollEvents();
+
     if (glfwWindowShouldClose(_window))
     {
         _gameState = GameState::EXIT;
     }
 }
-
 void MainGame::gameLoop()
 {
     while (_gameState != GameState::EXIT)
     {
         processInput();
-
-        glfwSwapBuffers(_window);
-        glfwPollEvents();
+        drawGame();
     }
 }
 
@@ -80,3 +96,17 @@ void MainGame::mouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 {
     std::cout << xposIn << " " << yposIn << std::endl;
 };
+
+void MainGame::drawGame()
+{
+    glClearDepth(1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _colorProgram.use();
+
+    _sprite.draw();
+
+    _colorProgram.unuse();
+
+    glfwSwapBuffers(_window);
+}

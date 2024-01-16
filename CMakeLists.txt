@@ -9,6 +9,9 @@ SET(CMAKE_BUILD_TYPE DEBUG)
 SET(SOURCE_FILES 
   src/main.cpp
   src/MainGame.cpp
+  src/Sprite.cpp
+  src/GLSLProgram.cpp
+  src/Errors.cpp
 )
 
 # Header files
