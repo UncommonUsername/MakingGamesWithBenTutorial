@@ -1,6 +1,16 @@
 #include <iostream>
+#include <string>
 
 #include "MainGame.h"
+
+void fatalError(std::string errorMessage)
+{
+    std::cout << errorMessage << std::endl;
+    std::cout << "Enter any key to quit...\n";
+    int tmp;
+    std::cin >> tmp;
+    exit(EXIT_FAILURE);
+}
 
 MainGame::MainGame()
 {
@@ -26,7 +36,7 @@ void MainGame::initSystems()
     // Initiate GLFW
     if (!glfwInit())
     {
-        std::cerr << "Error: Failed to initiate GLFW." << std::endl;
+        fatalError("GLFW failed to initiate!");
     }
 
     // GLFW configuration
@@ -39,8 +49,8 @@ void MainGame::initSystems()
 
     if (!_window)
     {
-        std::cerr << "Error: Failed to create GLFW window." << std::endl;
         glfwTerminate();
+        fatalError("Failed to create window!");
     }
 
     glfwMakeContextCurrent(_window);
