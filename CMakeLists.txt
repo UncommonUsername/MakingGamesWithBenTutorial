@@ -8,6 +8,7 @@ SET(CMAKE_BUILD_TYPE DEBUG)
 # Source files
 SET(SOURCE_FILES 
   src/main.cpp
+  src/MainGame.cpp
 )
 
 # Header files
