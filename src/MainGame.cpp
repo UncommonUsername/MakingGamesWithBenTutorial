@@ -70,7 +70,7 @@ void MainGame::initSystems()
 
 void MainGame::initShaders()
 {
-    _colorProgram.compileShaders("./shaders/colorShading.vert", "./shaders/colorShading.frag");
+    _colorProgram.compileShaders("./resources/shaders/colorShading.vert", "./resources/shaders/colorShading.frag");
     _colorProgram.addAttribute();
     _colorProgram.addAttribute();
     _colorProgram.linkShaders();
