@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include "Errors.h"
+#include "ImageLoader.h"
 
 #include <iostream>
 #include <string>
@@ -22,7 +23,9 @@ void MainGame::run()
 {
     initSystems();
 
-    _sprite.init(-1.0f, -1.0f, 1.0f, 1.0f);
+    _sprite.init(-1.0f, -1.0f, 2.0f, 2.0f);
+
+    _playerTexture = ImageLoader::loadPNG("./resources/textures/trex.png");
 
     gameLoop();
 }
@@ -71,8 +74,7 @@ void MainGame::initSystems()
 void MainGame::initShaders()
 {
     _colorProgram.compileShaders("./resources/shaders/colorShading.vert", "./resources/shaders/colorShading.frag");
-    _colorProgram.addAttribute();
-    _colorProgram.addAttribute();
+    _colorProgram.addAttribute(3);
     _colorProgram.linkShaders();
 }
 
@@ -106,12 +108,17 @@ void MainGame::drawGame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _colorProgram.use();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, _playerTexture.id);
+    GLint textureLocation = _colorProgram.getUniformLocation("playerTexture");
+    glUniform1i(textureLocation, 0);
 
-    GLuint timeLocation = _colorProgram.getUniformLocation("time");
-    glUniform1f(timeLocation, _time);
+    // GLuint timeLocation = _colorProgram.getUniformLocation("time");
+    // glUniform1f(timeLocation, _time);
 
     _sprite.draw();
 
+    glBindTexture(GL_TEXTURE_2D, 0);
     _colorProgram.unuse();
 
     glfwSwapBuffers(_window);

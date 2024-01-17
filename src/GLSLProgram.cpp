@@ -111,9 +111,9 @@ void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
     }
 }
 
-void GLSLProgram::addAttribute()
+void GLSLProgram::addAttribute(int numAttrib)
 {
-    _numAttributes++;
+    _numAttributes += numAttrib;
 }
 
 void GLSLProgram::use()

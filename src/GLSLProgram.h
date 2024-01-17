@@ -14,7 +14,7 @@ public:
 
     void linkShaders();
 
-    void addAttribute();
+    void addAttribute(int numAttrib);
 
     GLint getUniformLocation(const std::string& uniformName);
     void use();
