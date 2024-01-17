@@ -1,6 +1,7 @@
 #include "Errors.h"
 
 #include <iostream>
+#include <cstdlib>
 
 extern void fatalError(std::string errorMessage)
 {
@@ -8,5 +9,5 @@ extern void fatalError(std::string errorMessage)
     std::cout << "Enter any key to quit...\n";
     int tmp;
     std::cin >> tmp;
-    exit(EXIT_FAILURE);
+    exit(69);
 }

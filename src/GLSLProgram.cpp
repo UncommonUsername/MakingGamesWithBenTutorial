@@ -38,8 +38,6 @@ void GLSLProgram::compileShaders(const std::string& vertexShaderFilePath, const 
 
 void GLSLProgram::linkShaders()
 {
-    _programId = glCreateProgram();
-
     glAttachShader(_programId, _vertexShaderId);
     glAttachShader(_programId, _fragmentShaderId);
 
@@ -72,6 +70,8 @@ void GLSLProgram::linkShaders()
 
 void GLSLProgram::compileShader(const std::string& filePath, GLuint id)
 {
+    _programId = glCreateProgram();
+
     std::ifstream vertexFile(filePath);
     if (vertexFile.fail())
     {

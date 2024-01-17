@@ -71,6 +71,7 @@ void MainGame::initShaders()
 {
     _colorProgram.compileShaders("./shaders/colorShading.vert", "./shaders/colorShading.frag");
     _colorProgram.addAttribute();
+    _colorProgram.addAttribute();
     _colorProgram.linkShaders();
 }
 
