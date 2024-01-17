@@ -113,8 +113,8 @@ void MainGame::drawGame()
     GLint textureLocation = _colorProgram.getUniformLocation("playerTexture");
     glUniform1i(textureLocation, 0);
 
-    // GLuint timeLocation = _colorProgram.getUniformLocation("time");
-    // glUniform1f(timeLocation, _time);
+    GLuint timeLocation = _colorProgram.getUniformLocation("time");
+    glUniform1f(timeLocation, _time);
 
     _sprite.draw();
 
