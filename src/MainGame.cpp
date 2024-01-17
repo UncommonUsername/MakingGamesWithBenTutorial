@@ -4,12 +4,13 @@
 #include <iostream>
 #include <string>
 
-MainGame::MainGame()
+MainGame::MainGame() :
+    _window(nullptr),
+    _screenWidth(1026),
+    _screenHeight(768),
+    _gameState(GameState::PLAY),
+    _time(0)
 {
-    _window = nullptr;
-    _screenWidth = 1026;
-    _screenHeight = 768;
-    _gameState = GameState::PLAY;
 }
 
 MainGame::~MainGame()
@@ -89,6 +90,7 @@ void MainGame::gameLoop()
     while (_gameState != GameState::EXIT)
     {
         processInput();
+        _time += 0.01f;
         drawGame();
     }
 }
@@ -104,6 +106,9 @@ void MainGame::drawGame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _colorProgram.use();
+
+    GLuint timeLocation = _colorProgram.getUniformLocation("time");
+    glUniform1f(timeLocation, _time);
 
     _sprite.draw();
 
