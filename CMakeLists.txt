@@ -12,6 +12,7 @@ SET(SOURCE_FILES
   src/Sprite.cpp
   src/GLSLProgram.cpp
   src/Errors.cpp
+  src/ImageLoader.cpp
 )
 
 # Header files
