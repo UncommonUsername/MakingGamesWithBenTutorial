@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "Vertex.h"
+#include "ResourceManager.h"
 
 #include <cstddef>
 
@@ -17,12 +18,14 @@ Sprite::~Sprite()
     }
 }
 
-void Sprite::init(float x, float y, float width, float height)
+void Sprite::init(float x, float y, float width, float height, const char* filePath)
 {
     _x = x;
     _y = y;
     _width = width;
     _height = height;
+
+    _texture = ResourceManager::getTexture(filePath);
 
     if (_vboId == 0)
     {
@@ -70,6 +73,8 @@ void Sprite::init(float x, float y, float width, float height)
 
 void Sprite::draw()
 {
+    glBindTexture(GL_TEXTURE_2D, _texture.id);
+
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
 
     glEnableVertexAttribArray(0);

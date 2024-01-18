@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <vector>
 
 #include "Sprite.h"
 #include "GLSLProgram.h"
@@ -16,7 +17,6 @@ public:
     ~MainGame();
 
     void run();
-
 
 private:
     void initSystems();
@@ -33,8 +33,7 @@ private:
 
     GameState _gameState;
 
-    Sprite _sprite;
-    GLTexture _playerTexture;
+    std::vector<Sprite> _sprite;
 
     GLSLProgram _colorProgram;
 

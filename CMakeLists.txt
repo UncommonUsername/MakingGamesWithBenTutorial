@@ -13,6 +13,8 @@ SET(SOURCE_FILES
   src/GLSLProgram.cpp
   src/Errors.cpp
   src/ImageLoader.cpp
+  src/TextureCache.cpp
+  src/ResourceManager.cpp
 )
 
 # Header files
