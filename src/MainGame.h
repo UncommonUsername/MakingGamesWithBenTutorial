@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "GLSLProgram.h"
 #include "GLTexture.h"
+#include "Window.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -26,9 +27,7 @@ private:
     void drawGame();
     void calculateFPS();
 
-    static void mouseCallback(GLFWwindow* window, double xposIn, double yposIn);
-
-    GLFWwindow* _window;
+    Window _window;
     int _screenWidth;
     int _screenHeight;
 
@@ -39,6 +38,8 @@ private:
     GLSLProgram _colorProgram;
 
     float _fps;
+    float _maxFPS;
     float _frameTime;
+
     float _time;
 };

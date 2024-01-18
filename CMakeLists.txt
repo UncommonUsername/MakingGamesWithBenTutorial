@@ -15,6 +15,7 @@ SET(SOURCE_FILES
   src/ImageLoader.cpp
   src/TextureCache.cpp
   src/ResourceManager.cpp
+  src/Window.cpp
 )
 
 # Header files

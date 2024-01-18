@@ -5,11 +5,11 @@
 #include <string>
 
 MainGame::MainGame() :
-    _window(nullptr),
     _screenWidth(1026),
     _screenHeight(768),
     _gameState(GameState::PLAY),
-    _time(0)
+    _time(0),
+    _maxFPS(60)
 {
 }
 
@@ -39,42 +39,7 @@ void MainGame::run()
 
 void MainGame::initSystems()
 {
-    // Initiate GLFW
-    if (!glfwInit())
-    {
-        fatalError("GLFW failed to initiate!");
-    }
-
-    // GLFW configuration
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    
-    // Window creation
-    _window = glfwCreateWindow(_screenWidth, _screenHeight, "Game Engine", NULL, NULL);
-
-    if (!_window)
-    {
-        glfwTerminate();
-        fatalError("Failed to create window!");
-    }
-
-    glfwMakeContextCurrent(_window);
-    glfwSetCursorPosCallback(_window, mouseCallback);
-
-    // Initiate GLEW
-    glewExperimental = GL_TRUE;
-    GLenum error = glewInit();
-    if (error != GLEW_OK)
-    {
-        glfwTerminate();
-        fatalError("Failed to initialize GLEW!");
-    }
-
-    glEnable(GL_DEPTH_TEST);
-
-    glClearColor(0.012f, 0.0235f, 0.2157f, 1.0f);
-
+    _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
     initShaders();
 }
 
@@ -89,15 +54,18 @@ void MainGame::processInput()
 {
     glfwPollEvents();
 
-    if (glfwWindowShouldClose(_window))
+    if (_window.windowShouldClose())
     {
         _gameState = GameState::EXIT;
     }
 }
+
 void MainGame::gameLoop()
 {
     while (_gameState != GameState::EXIT)
     {
+        double startTicks = glfwGetTime() * 1000;
+
         processInput();
         _time += 0.01f;
         drawGame();
@@ -110,13 +78,15 @@ void MainGame::gameLoop()
             std::cout << _fps << std::endl;
             frameCount = 0;
         }
+
+        double frameTicks = (glfwGetTime() * 1000) - startTicks;
+
+        while (1000.0f / _maxFPS > frameTicks)
+        {
+            frameTicks = (glfwGetTime() * 1000) - startTicks;
+        }
     }
 }
-
-void MainGame::mouseCallback(GLFWwindow* window, double xposIn, double yposIn)
-{
-    std::cout << xposIn << " " << yposIn << std::endl;
-};
 
 void MainGame::drawGame()
 {
@@ -139,7 +109,7 @@ void MainGame::drawGame()
     glBindTexture(GL_TEXTURE_2D, 0);
     _colorProgram.unuse();
 
-    glfwSwapBuffers(_window);
+    _window.swapBuffers();
 }
 
 void MainGame::calculateFPS()
@@ -160,6 +130,8 @@ void MainGame::calculateFPS()
     previousTicks = currentTicks;
 
     int count;
+
+    currentFrame++;
 
     if (currentFrame < NUM_SAMPLES)
     {
@@ -185,6 +157,4 @@ void MainGame::calculateFPS()
     {
         _fps = 60.0f;
     }
-
-    currentFrame++;
 }
