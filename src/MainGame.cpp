@@ -101,6 +101,15 @@ void MainGame::gameLoop()
         processInput();
         _time += 0.01f;
         drawGame();
+        calculateFPS();
+
+        static int frameCount = 0;
+        frameCount++;
+        if (frameCount == 10)
+        {
+            std::cout << _fps << std::endl;
+            frameCount = 0;
+        }
     }
 }
 
@@ -131,4 +140,51 @@ void MainGame::drawGame()
     _colorProgram.unuse();
 
     glfwSwapBuffers(_window);
+}
+
+void MainGame::calculateFPS()
+{
+    static const int NUM_SAMPLES = 10;
+    static float frameTimes[NUM_SAMPLES];
+    static int currentFrame = 0;
+
+    // Multiplied by 1000 to change it from seconds to milisecond.
+    static float previousTicks = glfwGetTime() * 1000;
+
+    float currentTicks;
+    currentTicks = glfwGetTime() * 1000;
+
+    _frameTime = currentTicks - previousTicks;
+    frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
+
+    previousTicks = currentTicks;
+
+    int count;
+
+    if (currentFrame < NUM_SAMPLES)
+    {
+        count = currentFrame;
+    }
+    else
+    {
+        count = NUM_SAMPLES;
+    }
+
+    float frameTimeAverage = 0;
+    for (int i = 0; i < count; i++)
+    {
+        frameTimeAverage += frameTimes[i];
+    }
+    frameTimeAverage /= count;
+
+    if (frameTimeAverage > 0)
+    {
+        _fps = 1000.0f / frameTimeAverage;
+    }
+    else
+    {
+        _fps = 60.0f;
+    }
+
+    currentFrame++;
 }

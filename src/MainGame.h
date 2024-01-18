@@ -24,6 +24,7 @@ private:
     void processInput();
     void gameLoop();
     void drawGame();
+    void calculateFPS();
 
     static void mouseCallback(GLFWwindow* window, double xposIn, double yposIn);
 
@@ -37,5 +38,7 @@ private:
 
     GLSLProgram _colorProgram;
 
+    float _fps;
+    float _frameTime;
     float _time;
 };
