@@ -33,7 +33,7 @@ private:
 
     GameState _gameState;
 
-    std::vector<Sprite> _sprite;
+    std::vector<Sprite*> _sprite;
 
     GLSLProgram _colorProgram;
 

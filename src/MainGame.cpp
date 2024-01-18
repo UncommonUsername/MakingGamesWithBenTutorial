@@ -15,6 +15,12 @@ MainGame::MainGame() :
 
 MainGame::~MainGame()
 {
+    while (!_sprite.empty())
+    {
+        delete _sprite.back();
+        _sprite.pop_back();
+    }
+
     glfwTerminate();
 }
 
@@ -22,9 +28,11 @@ void MainGame::run()
 {
     initSystems();
 
-    _sprite.push_back(Sprite());
-    _sprite.back().init(-1.0f, -1.0f, 1.0f, 1.0f, "./resources/textures/trex.png");
+    _sprite.push_back(new Sprite());
+    _sprite.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "./resources/textures/trex.png");
 
+    _sprite.push_back(new Sprite());
+    _sprite.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "./resources/textures/trex.png");
 
     gameLoop();
 }
@@ -116,7 +124,7 @@ void MainGame::drawGame()
 
     for (int i = 0; i < _sprite.size(); i++)
     {
-        _sprite[i].draw();
+        _sprite[i]->draw();
     }
 
     glBindTexture(GL_TEXTURE_2D, 0);
