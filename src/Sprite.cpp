@@ -12,6 +12,11 @@ Sprite::Sprite()
 
 Sprite::~Sprite()
 {
+    if (_vaoId != 0)
+    {
+        glDeleteVertexArrays(1, &_vaoId);
+    }
+
     if (_vboId != 0)
     {
         glDeleteBuffers(1, &_vboId);
