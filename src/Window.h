@@ -22,6 +22,7 @@ public:
     void swapBuffers();
 
     static void mouseCallback(GLFWwindow* window, double xposIn, double yposIn);
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 private:
     GLFWwindow* _window;

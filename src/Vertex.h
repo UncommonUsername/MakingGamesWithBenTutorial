@@ -2,7 +2,6 @@
 
 #include "GL/glew.h"
 
-
 struct Position
 {
     float x;
@@ -17,6 +16,7 @@ struct Color
     GLubyte a;
 };
 
+// This struct represents the location of the texture in the vertex.
 struct UV
 {
     float u;

@@ -38,6 +38,7 @@ int Window::createWindow(std::string windowName, int screenWidth, int screenHeig
     }
 
     glfwMakeContextCurrent(_window);
+    glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
     glfwSetCursorPosCallback(_window, mouseCallback);
 
     // Initiate GLEW
@@ -61,6 +62,11 @@ int Window::createWindow(std::string windowName, int screenWidth, int screenHeig
 void Window::mouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 {
     std::cout << xposIn << " " << yposIn << std::endl;
+}
+
+void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
 
 bool Window::windowShouldClose()

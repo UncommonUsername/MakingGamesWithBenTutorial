@@ -29,6 +29,7 @@ void MainGame::run()
 {
     initSystems();
 
+    // Push a single sprite with the texture of the image trex.png
     _sprite.push_back(new Sprite());
     _sprite.back()->init(0.0f, 0.0f, _screenWidth / 3, _screenWidth / 3, "./resources/textures/trex.png");
 
@@ -54,11 +55,13 @@ void MainGame::processInput(float delta)
     float CAMERA_SPEED = 0.5f * (delta);
     std::cout << "Speed: " << CAMERA_SPEED << " Delta: " << delta << std::endl;
 
+    // Check if user pressed the X of the window
     if (_window.windowShouldClose())
     {
         _gameState = GameState::EXIT;
     }
 
+    // Process keyboard input
     if (glfwGetKey(_window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, - CAMERA_SPEED));
@@ -86,6 +89,7 @@ void MainGame::gameLoop()
 {
     while (_gameState != GameState::EXIT)
     {
+        // Variables for limiting the FPS
         double startTicks = glfwGetTime() * 1000;
         static int frameCount = 0;
         static double frameTicks = 0;
@@ -93,10 +97,12 @@ void MainGame::gameLoop()
         processInput(frameTicks);
         _time += 0.01f;
 
+        // Move camera and draw sprites to screen
         _camera.update();
         drawGame();
         calculateFPS();
 
+        // Print FPS every 10 frames
         frameCount++;
         if (frameCount == 10)
         {
@@ -104,8 +110,10 @@ void MainGame::gameLoop()
             frameCount = 0;
         }
 
+        // Get ticks in miliseconds 
         frameTicks = (glfwGetTime() * 1000) - startTicks;
 
+        // Delay program to limit FPS
         while (1000.0f / _maxFPS > frameTicks)
         {
             frameTicks = (glfwGetTime() * 1000) - startTicks;
@@ -115,22 +123,28 @@ void MainGame::gameLoop()
 
 void MainGame::drawGame()
 {
+    // Clear depth and color buffers
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Use shaders
     _colorProgram.use();
 
+    // Send player texture to shader
     glActiveTexture(GL_TEXTURE0);
     GLint textureLocation = _colorProgram.getUniformLocation("playerTexture");
     glUniform1i(textureLocation, 0);
 
+    // Send time value to shader
     GLuint timeLocation = _colorProgram.getUniformLocation("time");
     glUniform1f(timeLocation, _time);
 
+    // Send projection matrix to shader
     GLuint pLocation = _colorProgram.getUniformLocation("P");
     glm::mat4 cameraMatrix = _camera.getCameraMathix();
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
+    // Draw all sprites
     for (int i = 0; i < _sprite.size(); i++)
     {
         _sprite[i]->draw();
