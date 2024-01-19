@@ -48,10 +48,11 @@ void MainGame::initShaders()
     _colorProgram.linkShaders();
 }
 
-void MainGame::processInput()
+void MainGame::processInput(float delta)
 {
 
-    const float CAMERA_SPEED = 10.0f;
+    float CAMERA_SPEED = 0.5f * (delta);
+    std::cout << "Speed: " << CAMERA_SPEED << " Delta: " << delta << std::endl;
 
     if (_window.windowShouldClose())
     {
@@ -86,15 +87,16 @@ void MainGame::gameLoop()
     while (_gameState != GameState::EXIT)
     {
         double startTicks = glfwGetTime() * 1000;
+        static int frameCount = 0;
+        static double frameTicks = 0;
 
-        processInput();
+        processInput(frameTicks);
         _time += 0.01f;
 
         _camera.update();
         drawGame();
         calculateFPS();
 
-        static int frameCount = 0;
         frameCount++;
         if (frameCount == 10)
         {
@@ -102,7 +104,7 @@ void MainGame::gameLoop()
             frameCount = 0;
         }
 
-        double frameTicks = (glfwGetTime() * 1000) - startTicks;
+        frameTicks = (glfwGetTime() * 1000) - startTicks;
 
         while (1000.0f / _maxFPS > frameTicks)
         {

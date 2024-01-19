@@ -23,7 +23,7 @@ public:
 private:
     void initSystems();
     void initShaders();
-    void processInput();
+    void processInput(float delta);
     void gameLoop();
     void drawGame();
     void calculateFPS();
