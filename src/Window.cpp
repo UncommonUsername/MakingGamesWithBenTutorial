@@ -56,17 +56,17 @@ int Window::createWindow(std::string windowName, int screenWidth, int screenHeig
     glClearColor(0.012f, 0.0235f, 0.2157f, 1.0f);
 
     return 0;
-};
+}
 
 void Window::mouseCallback(GLFWwindow* window, double xposIn, double yposIn)
 {
     std::cout << xposIn << " " << yposIn << std::endl;
-};
+}
 
 bool Window::windowShouldClose()
 {
     return glfwWindowShouldClose(_window);
-};
+}
 
 void Window::swapBuffers()
 {

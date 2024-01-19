@@ -11,6 +11,7 @@ MainGame::MainGame() :
     _time(0),
     _maxFPS(60)
 {
+    _camera.init(_screenWidth, _screenHeight);
 }
 
 MainGame::~MainGame()
@@ -29,10 +30,7 @@ void MainGame::run()
     initSystems();
 
     _sprite.push_back(new Sprite());
-    _sprite.back()->init(-1.0f, -1.0f, 1.0f, 1.0f, "./resources/textures/trex.png");
-
-    _sprite.push_back(new Sprite());
-    _sprite.back()->init(0.0f, -1.0f, 1.0f, 1.0f, "./resources/textures/trex.png");
+    _sprite.back()->init(0.0f, 0.0f, _screenWidth / 3, _screenWidth / 3, "./resources/textures/trex.png");
 
     gameLoop();
 }
@@ -52,11 +50,34 @@ void MainGame::initShaders()
 
 void MainGame::processInput()
 {
-    glfwPollEvents();
+
+    const float CAMERA_SPEED = 10.0f;
 
     if (_window.windowShouldClose())
     {
         _gameState = GameState::EXIT;
+    }
+
+    if (glfwGetKey(_window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+    {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, - CAMERA_SPEED));
+    }
+
+    glfwPollEvents();
+
+    if (glfwGetKey(_window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+    {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
+    }
+
+    if (glfwGetKey(_window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+    {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
+    }
+
+    if (glfwGetKey(_window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+    {
+        _camera.setPosition(_camera.getPosition() + glm::vec2(- CAMERA_SPEED, 0.0f));
     }
 }
 
@@ -68,6 +89,8 @@ void MainGame::gameLoop()
 
         processInput();
         _time += 0.01f;
+
+        _camera.update();
         drawGame();
         calculateFPS();
 
@@ -94,12 +117,17 @@ void MainGame::drawGame()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _colorProgram.use();
+
     glActiveTexture(GL_TEXTURE0);
     GLint textureLocation = _colorProgram.getUniformLocation("playerTexture");
     glUniform1i(textureLocation, 0);
 
     GLuint timeLocation = _colorProgram.getUniformLocation("time");
     glUniform1f(timeLocation, _time);
+
+    GLuint pLocation = _colorProgram.getUniformLocation("P");
+    glm::mat4 cameraMatrix = _camera.getCameraMathix();
+    glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
     for (int i = 0; i < _sprite.size(); i++)
     {

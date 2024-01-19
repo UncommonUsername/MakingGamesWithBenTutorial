@@ -14,8 +14,9 @@ public:
 
     int createWindow(std::string windowName, int screenWidth, int screenHeight, unsigned int currentFlags);
 
-    int getScreenWidth() {return _screenWidth;}
-    int getScreenHeight() {return _screenHeight;}
+    GLFWwindow* getWindow() { return _window; }
+    int getScreenWidth() { return _screenWidth; }
+    int getScreenHeight() { return _screenHeight; }
 
     bool windowShouldClose();
     void swapBuffers();

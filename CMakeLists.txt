@@ -16,6 +16,7 @@ SET(SOURCE_FILES
   src/TextureCache.cpp
   src/ResourceManager.cpp
   src/Window.cpp
+  src/Camera2D.cpp
 )
 
 # Header files

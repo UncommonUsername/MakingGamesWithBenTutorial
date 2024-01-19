@@ -8,6 +8,7 @@
 #include "GLSLProgram.h"
 #include "GLTexture.h"
 #include "Window.h"
+#include "Camera2D.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -34,6 +35,8 @@ private:
     GameState _gameState;
 
     std::vector<Sprite*> _sprite;
+
+    Camera2D _camera;
 
     GLSLProgram _colorProgram;
 
