@@ -69,7 +69,6 @@ void Sprite::init(float x, float y, float width, float height, const char* fileP
         vertexData[i].setColor(210, 69 + (i * 20), 69, 255);
     }
 
-    glBindVertexArray(_vaoId);
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
 
@@ -82,16 +81,7 @@ void Sprite::draw()
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboId);
 
-    glEnableVertexAttribArray(0);
-
-    // Specify the data disctribution in the vertices
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
-    glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void *)offsetof(Vertex, color));
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, uv));
-
     glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glDisableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

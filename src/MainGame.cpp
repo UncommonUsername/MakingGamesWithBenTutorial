@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include "Errors.h"
+#include "ResourceManager.h"
 
 #include <iostream>
 #include <string>
@@ -16,22 +17,12 @@ MainGame::MainGame() :
 
 MainGame::~MainGame()
 {
-    while (!_sprite.empty())
-    {
-        delete _sprite.back();
-        _sprite.pop_back();
-    }
-
     glfwTerminate();
 }
 
 void MainGame::run()
 {
     initSystems();
-
-    // Push a single sprite with the texture of the image trex.png
-    _sprite.push_back(new Sprite());
-    _sprite.back()->init(0.0f, 0.0f, _screenWidth / 3, _screenWidth / 3, "./resources/textures/trex.png");
 
     gameLoop();
 }
@@ -40,6 +31,7 @@ void MainGame::initSystems()
 {
     _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
     initShaders();
+    _spriteBatch.init();
 }
 
 void MainGame::initShaders()
@@ -53,7 +45,6 @@ void MainGame::processInput(float delta)
 {
 
     float CAMERA_SPEED = 0.5f * (delta);
-    std::cout << "Speed: " << CAMERA_SPEED << " Delta: " << delta << std::endl;
 
     // Check if user pressed the X of the window
     if (_window.windowShouldClose())
@@ -144,11 +135,23 @@ void MainGame::drawGame()
     glm::mat4 cameraMatrix = _camera.getCameraMathix();
     glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(cameraMatrix[0][0]));
 
-    // Draw all sprites
-    for (int i = 0; i < _sprite.size(); i++)
-    {
-        _sprite[i]->draw();
-    }
+    _spriteBatch.begin();
+    
+    glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
+    glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
+
+    static GLTexture texture = ResourceManager::getTexture("./resources/textures/trex.png");
+
+    Color color;
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    color.a = 255;
+
+    _spriteBatch.draw(pos, uv, texture.id, 0.0f, color);
+
+    _spriteBatch.end();
+    _spriteBatch.renderBatch();
 
     glBindTexture(GL_TEXTURE_2D, 0);
     _colorProgram.unuse();

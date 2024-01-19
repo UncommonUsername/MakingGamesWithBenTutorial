@@ -17,6 +17,7 @@ SET(SOURCE_FILES
   src/ResourceManager.cpp
   src/Window.cpp
   src/Camera2D.cpp
+  src/SpriteBatch.cpp
 )
 
 # Header files
