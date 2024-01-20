@@ -44,7 +44,7 @@ void MainGame::initShaders()
 void MainGame::processInput(float delta)
 {
 
-    float CAMERA_SPEED = 0.5f * (delta);
+    float CAMERA_SPEED = 10.0f;
 
     // Check if user pressed the X of the window
     if (_window.windowShouldClose())
