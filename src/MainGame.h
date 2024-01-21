@@ -49,5 +49,4 @@ private:
     float _fps;
     float _maxFPS;
 
-    float _time;
 };

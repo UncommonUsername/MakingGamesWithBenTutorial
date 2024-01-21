@@ -11,7 +11,6 @@ MainGame::MainGame() :
     _screenWidth(1026),
     _screenHeight(768),
     _gameState(GameState::PLAY),
-    _time(0),
     _maxFPS(60)
 {
     _camera.init(_screenWidth, _screenHeight);
@@ -89,7 +88,6 @@ void MainGame::gameLoop()
         static int frameCount = 0;
 
         processInput();
-        _time += 0.01f;
 
         // Move camera and draw sprites to screen
         _camera.update();
@@ -120,10 +118,6 @@ void MainGame::drawGame()
     glActiveTexture(GL_TEXTURE0);
     GLint textureLocation = _colorProgram.getUniformLocation("playerTexture");
     glUniform1i(textureLocation, 0);
-
-    // Send time value to shader
-    GLuint timeLocation = _colorProgram.getUniformLocation("time");
-    glUniform1f(timeLocation, _time);
 
     // Send projection matrix to shader
     GLuint pLocation = _colorProgram.getUniformLocation("P");
