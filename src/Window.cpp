@@ -53,6 +53,8 @@ int Window::createWindow(std::string windowName, int screenWidth, int screenHeig
     std::printf("*** OpenGL Version: %s ***", glGetString(GL_VERSION));
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClearColor(0.012f, 0.0235f, 0.2157f, 1.0f);
 
