@@ -19,6 +19,7 @@ SET(SOURCE_FILES
   src/Camera2D.cpp
   src/SpriteBatch.cpp
   src/InputManager.cpp
+  src/Timer.cpp
 )
 
 # Header files

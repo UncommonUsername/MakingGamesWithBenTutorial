@@ -35,6 +35,7 @@ void MainGame::initSystems()
     glfwSetKeyCallback(_window.getWindow(), key_callback);
     initShaders();
     _spriteBatch.init();
+    _fpsLimiter.init(_maxFPS);
 }
 
 void MainGame::initShaders()
@@ -44,7 +45,7 @@ void MainGame::initShaders()
     _colorProgram.linkShaders();
 }
 
-void MainGame::processInput(float delta)
+void MainGame::processInput()
 {
 
     float CAMERA_SPEED = 2.0f;
@@ -84,17 +85,17 @@ void MainGame::gameLoop()
     while (_gameState != GameState::EXIT)
     {
         // Variables for limiting the FPS
-        double startTicks = glfwGetTime() * 1000;
+        _fpsLimiter.begin();
         static int frameCount = 0;
-        static double frameTicks = 0;
 
-        processInput(frameTicks);
+        processInput();
         _time += 0.01f;
 
         // Move camera and draw sprites to screen
         _camera.update();
         drawGame();
-        calculateFPS();
+
+        _fps = _fpsLimiter.end();
 
         // Print FPS every 10 frames
         frameCount++;
@@ -102,15 +103,6 @@ void MainGame::gameLoop()
         {
             std::cout << _fps << std::endl;
             frameCount = 0;
-        }
-
-        // Get ticks in miliseconds 
-        frameTicks = (glfwGetTime() * 1000) - startTicks;
-
-        // Delay program to limit FPS
-        while (1000.0f / _maxFPS > frameTicks)
-        {
-            frameTicks = (glfwGetTime() * 1000) - startTicks;
         }
     }
 }
@@ -160,53 +152,6 @@ void MainGame::drawGame()
     _colorProgram.unuse();
 
     _window.swapBuffers();
-}
-
-void MainGame::calculateFPS()
-{
-    static const int NUM_SAMPLES = 10;
-    static float frameTimes[NUM_SAMPLES];
-    static int currentFrame = 0;
-
-    // Multiplied by 1000 to change it from seconds to milisecond.
-    static float previousTicks = glfwGetTime() * 1000;
-
-    float currentTicks;
-    currentTicks = glfwGetTime() * 1000;
-
-    _frameTime = currentTicks - previousTicks;
-    frameTimes[currentFrame % NUM_SAMPLES] = _frameTime;
-
-    previousTicks = currentTicks;
-
-    int count;
-
-    currentFrame++;
-
-    if (currentFrame < NUM_SAMPLES)
-    {
-        count = currentFrame;
-    }
-    else
-    {
-        count = NUM_SAMPLES;
-    }
-
-    float frameTimeAverage = 0;
-    for (int i = 0; i < count; i++)
-    {
-        frameTimeAverage += frameTimes[i];
-    }
-    frameTimeAverage /= count;
-
-    if (frameTimeAverage > 0)
-    {
-        _fps = 1000.0f / frameTimeAverage;
-    }
-    else
-    {
-        _fps = 60.0f;
-    }
 }
 
 void MainGame::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

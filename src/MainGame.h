@@ -11,6 +11,7 @@
 #include "Camera2D.h"
 #include "SpriteBatch.h"
 #include "InputManager.h"
+#include "Timer.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -25,10 +26,9 @@ public:
 private:
     void initSystems();
     void initShaders();
-    void processInput(float delta);
+    void processInput();
     void gameLoop();
     void drawGame();
-    void calculateFPS();
 
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
@@ -42,12 +42,12 @@ private:
 
     GLSLProgram _colorProgram;
     SpriteBatch _spriteBatch;
+    FpsLimiter _fpsLimiter;
     
     static InputManager _inputManager;
 
     float _fps;
     float _maxFPS;
-    float _frameTime;
 
     float _time;
 };
