@@ -26,5 +26,5 @@ bool InputManager::isKeyDown(unsigned int keyId)
         return it->second;
     }
 
-    return false
+    return false;
 }

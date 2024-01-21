@@ -10,6 +10,7 @@
 #include "Window.h"
 #include "Camera2D.h"
 #include "SpriteBatch.h"
+#include "InputManager.h"
 
 enum class GameState {PLAY, EXIT};
 
@@ -29,6 +30,8 @@ private:
     void drawGame();
     void calculateFPS();
 
+    static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
     Window _window;
     int _screenWidth;
     int _screenHeight;
@@ -39,6 +42,8 @@ private:
 
     GLSLProgram _colorProgram;
     SpriteBatch _spriteBatch;
+    
+    static InputManager _inputManager;
 
     float _fps;
     float _maxFPS;

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+InputManager MainGame::_inputManager;
+
 MainGame::MainGame() :
     _screenWidth(1026),
     _screenHeight(768),
@@ -30,6 +32,7 @@ void MainGame::run()
 void MainGame::initSystems()
 {
     _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
+    glfwSetKeyCallback(_window.getWindow(), key_callback);
     initShaders();
     _spriteBatch.init();
 }
@@ -44,7 +47,9 @@ void MainGame::initShaders()
 void MainGame::processInput(float delta)
 {
 
-    float CAMERA_SPEED = 10.0f;
+    float CAMERA_SPEED = 2.0f;
+
+    glfwPollEvents();
 
     // Check if user pressed the X of the window
     if (_window.windowShouldClose())
@@ -53,24 +58,22 @@ void MainGame::processInput(float delta)
     }
 
     // Process keyboard input
-    if (glfwGetKey(_window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+    if (_inputManager.isKeyDown(GLFW_KEY_W))
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, - CAMERA_SPEED));
     }
 
-    glfwPollEvents();
-
-    if (glfwGetKey(_window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+    if (_inputManager.isKeyDown(GLFW_KEY_S))
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(0.0f, CAMERA_SPEED));
     }
 
-    if (glfwGetKey(_window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+    if (_inputManager.isKeyDown(GLFW_KEY_A))
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(CAMERA_SPEED, 0.0f));
     }
 
-    if (glfwGetKey(_window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+    if (_inputManager.isKeyDown(GLFW_KEY_D))
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(- CAMERA_SPEED, 0.0f));
     }
@@ -203,5 +206,18 @@ void MainGame::calculateFPS()
     else
     {
         _fps = 60.0f;
+    }
+}
+
+void MainGame::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    // std::cout << "Key: " << key << " Scancode: " << scancode << " Action: " << action << std::endl;
+    if (action == 1 || action == 2)
+    {
+        _inputManager.pressKey(key);
+    }
+    else if (action == 0)
+    {
+        _inputManager.releaseKey(key);
     }
 }
