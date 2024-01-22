@@ -34,6 +34,7 @@ void MainGame::initSystems()
 
     glfwSetKeyCallback(_window.getWindow(), key_callback);
     glfwSetCursorPosCallback(_window.getWindow(), cusros_por_callback);
+    glfwSetMouseButtonCallback(_window.getWindow(), mouse_button_callback);
 
     initShaders();
     _spriteBatch.init();
@@ -166,5 +167,10 @@ void MainGame::key_callback(GLFWwindow* window, int key, int scancode, int actio
 
 void MainGame::cusros_por_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    std::cout << xpos << "-" << ypos << std::endl;
+    // std::cout << xpos << "-" << ypos << std::endl;
+}
+
+void MainGame::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    std::cout << button << "-" << action << std::endl;
 }
