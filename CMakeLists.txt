@@ -20,6 +20,7 @@ SET(SOURCE_FILES
   src/SpriteBatch.cpp
   src/InputManager.cpp
   src/Timer.cpp
+  src/Bullet.cpp
 )
 
 # Header files
