@@ -31,6 +31,7 @@ private:
     void drawGame();
 
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    static void cusros_por_callback(GLFWwindow* window, double xpos, double ypos);
 
     Window _window;
     int _screenWidth;

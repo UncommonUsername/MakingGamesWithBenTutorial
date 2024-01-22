@@ -31,7 +31,10 @@ void MainGame::run()
 void MainGame::initSystems()
 {
     _window.createWindow("Game Engine", _screenWidth, _screenHeight, 0);
+
     glfwSetKeyCallback(_window.getWindow(), key_callback);
+    glfwSetCursorPosCallback(_window.getWindow(), cusros_por_callback);
+
     initShaders();
     _spriteBatch.init();
     _fpsLimiter.init(_maxFPS);
@@ -99,7 +102,7 @@ void MainGame::gameLoop()
         frameCount++;
         if (frameCount == 10)
         {
-            std::cout << _fps << std::endl;
+            // std::cout << _fps << std::endl;
             frameCount = 0;
         }
     }
@@ -159,4 +162,9 @@ void MainGame::key_callback(GLFWwindow* window, int key, int scancode, int actio
     {
         _inputManager.releaseKey(key);
     }
+}
+
+void MainGame::cusros_por_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    std::cout << xpos << "-" << ypos << std::endl;
 }
