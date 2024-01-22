@@ -1,6 +1,7 @@
 #include "InputManager.h"
 
-InputManager::InputManager()
+InputManager::InputManager() :
+    _mouseCoords(0.0f)
 {
 }
 
@@ -18,6 +19,12 @@ void InputManager::releaseKey(unsigned int keyId)
     _keyMap[keyId] = false;
 }
 
+void InputManager::setMouseCoords(float x, float y)
+{
+    _mouseCoords.x = x;
+    _mouseCoords.y = y;
+}
+
 bool InputManager::isKeyDown(unsigned int keyId)
 {
     auto it = _keyMap.find(keyId);
@@ -27,4 +34,9 @@ bool InputManager::isKeyDown(unsigned int keyId)
     }
 
     return false;
+}
+
+glm::vec2 InputManager::getMouseCoords()
+{
+    return _mouseCoords;
 }

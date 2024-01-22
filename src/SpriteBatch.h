@@ -53,7 +53,7 @@ public:
 
 private:
     void createRenderBatches();
-    void  createVertexArray();
+    void createVertexArray();
     void sortGlyph();
 
     static bool compareFrontToBack(Glyph* a, Glyph* b);

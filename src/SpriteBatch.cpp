@@ -53,7 +53,7 @@ void SpriteBatch::draw(const glm::vec4& destinationRectangle, const glm::vec4& u
 
     newGlyph->bottomRight.color = color;
     newGlyph->bottomRight.setPosition(destinationRectangle.x + destinationRectangle.z, destinationRectangle.y);
-    newGlyph->bottomRight.setUV(uvRectangle.x + uvRectangle.z,uvRectangle.y);
+    newGlyph->bottomRight.setUV(uvRectangle.x + uvRectangle.z, uvRectangle.y);
 
     newGlyph->topRight.color = color;
     newGlyph->topRight.setPosition(destinationRectangle.x + destinationRectangle.z, destinationRectangle.y + destinationRectangle.w);
@@ -109,7 +109,7 @@ void SpriteBatch::createRenderBatches()
             _renderBatch.back().numVertices += 6;
         }
 
-        _renderBatch.emplace_back(0, 6, _glyphs[cg]->texture);
+        // _renderBatch.emplace_back(0, 6, _glyphs[cg]->texture);
         vertices[cv++] = _glyphs[cg]->topLeft;
         vertices[cv++] = _glyphs[cg]->bottomLeft;
         vertices[cv++] = _glyphs[cg]->bottomRight;

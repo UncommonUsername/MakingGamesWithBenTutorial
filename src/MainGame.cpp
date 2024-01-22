@@ -52,6 +52,7 @@ void MainGame::processInput()
 {
 
     float CAMERA_SPEED = 2.0f;
+    float SCALE_SPEED = 0.1f;
 
     glfwPollEvents();
 
@@ -80,6 +81,23 @@ void MainGame::processInput()
     if (_inputManager.isKeyDown(GLFW_KEY_D))
     {
         _camera.setPosition(_camera.getPosition() + glm::vec2(- CAMERA_SPEED, 0.0f));
+    }
+
+    if (_inputManager.isKeyDown(GLFW_KEY_Q))
+    {
+        _camera.setScale(_camera.getScale() + SCALE_SPEED);
+    }
+
+    if (_inputManager.isKeyDown(GLFW_KEY_E))
+    {
+        _camera.setScale(_camera.getScale() - SCALE_SPEED);
+    }
+    
+    if (_inputManager.isKeyDown(GLFW_MOUSE_BUTTON_RIGHT))
+    {
+        glm::vec2 mouseCoords = _inputManager.getMouseCoords();
+        mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+        std::cout << mouseCoords.x << "-" << mouseCoords.y << std::endl;
     }
 }
 
@@ -168,9 +186,18 @@ void MainGame::key_callback(GLFWwindow* window, int key, int scancode, int actio
 void MainGame::cusros_por_callback(GLFWwindow* window, double xpos, double ypos)
 {
     // std::cout << xpos << "-" << ypos << std::endl;
+    _inputManager.setMouseCoords(xpos, ypos);
 }
 
 void MainGame::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    std::cout << button << "-" << action << std::endl;
+    // std::cout << button << "-" << action << std::endl;
+    if (action == GLFW_PRESS)
+    {
+        _inputManager.pressKey(button);
+    }
+    else
+    {
+        _inputManager.releaseKey(button);
+    }
 }
